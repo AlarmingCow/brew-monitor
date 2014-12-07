@@ -10,4 +10,4 @@ TBD
 
 Copyright © 2014 Colin Cross
 
-Licensed under the Eclipse Public License, the same as Clojure.
+Licensed under the MIT License
