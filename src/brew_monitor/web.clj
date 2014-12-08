@@ -3,14 +3,15 @@
             [compojure.route :as route]
             [compojure.handler :as handler]
             [ring.adapter.jetty :as jetty]
-            [hiccup.page :as page]))
+            [hiccup.page :as page]
+            [brew-monitor.store-es :as store]))
 
 (defn index []
   (page/html5
     [:head
-      [:title "Hello World"]]
+      [:title "Most recent temperature"]]
     [:body
-      [:div {:id "content"} "Hello World"]]))
+      [:div {:id "content"} (first (store/most-recent-temps))]]))
 
 (defroutes routes
   (GET "/" [] (index)))
