@@ -8,6 +8,7 @@
                  [hiccup "1.0.5"]
                  [compojure "1.1.6"]
                  [ring/ring-jetty-adapter "1.2.1"]
-                 [clojurewerkz/elastisch "2.1.0"]]
+                 [clojurewerkz/elastisch "2.1.0"]
+                 [clj-time "0.8.0"]]
   :main brew-monitor.web)
 
