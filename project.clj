@@ -9,6 +9,7 @@
                  [compojure "1.1.6"]
                  [ring/ring-jetty-adapter "1.2.1"]
                  [clojurewerkz/elastisch "2.1.0"]
-                 [clj-time "0.8.0"]]
+                 [clj-time "0.8.0"]
+                 [liberator "0.12.2"]]
   :main brew-monitor.web)
 
