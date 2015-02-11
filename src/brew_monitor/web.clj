@@ -14,12 +14,13 @@
      (page/include-js "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
      (page/include-js "js/main.js")]
     [:body
-      [:div {:id "content"} (first (store/most-recent-temps))]]))
+      [:div {:id "content"} (first (store/most-recent-temps 1))]]))
 
 (defroutes routes
   (GET "/" [] (index))
-  (GET "/mostRecentTemp" [] (lib/resource :available-media-types ["application/json"]
-                                          :handle-ok { :temp (first (store/most-recent-temps))}))
+  (GET "/mostRecentTemps" {params :params}
+       (lib/resource :available-media-types ["application/json"]
+                     :handle-ok {:temps (store/most-recent-temps (Integer/parseInt (:results params)))}))
   (route/resources "/"))
 
 (def application (handler/site routes))
