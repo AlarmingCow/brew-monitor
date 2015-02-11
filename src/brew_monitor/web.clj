@@ -14,7 +14,7 @@
      (page/include-js "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
      (page/include-js "js/main.js")]
     [:body
-      [:div {:id "content"} (first (store/most-recent-temps 1))]]))
+      [:div {:id "content"} (:temp (first (store/most-recent-temps 1)))]]))
 
 (defroutes routes
   (GET "/" [] (index))

@@ -3,7 +3,7 @@ $(document).ready(function() {
         jQuery.ajax({
             url: "/mostRecentTemps?results=20",
             success: function(data) {
-                jQuery("#content").text(data.temps[0]);
+                jQuery("#content").text(data.temps[0].temp);
             },
             dataType: "json"
         });
