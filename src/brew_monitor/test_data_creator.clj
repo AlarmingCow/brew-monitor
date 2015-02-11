@@ -19,4 +19,4 @@
 (defn -main []
   (doseq [temp repeated-temps]
     (send-temp temp)
-    (Thread/sleep 10000)))
+    (Thread/sleep 1000)))
