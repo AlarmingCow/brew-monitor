@@ -12,9 +12,12 @@
     [:head
      [:title "Most recent temperature"]
      (page/include-js "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
+     (page/include-js "//d3js.org/d3.v3.min.js")
      (page/include-js "js/main.js")]
     [:body
-      [:div {:id "content"} (:temp (first (store/most-recent-temps 1)))]]))
+      [:div {:id "content"}
+       [:div {:id "most-recent-temp"} (:temp (first (store/most-recent-temps 1)))]
+       [:div {:id "graph"}]]]))
 
 (defroutes routes
   (GET "/" [] (index))
