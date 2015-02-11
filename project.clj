@@ -12,4 +12,3 @@
                  [clj-time "0.8.0"]
                  [liberator "0.12.2"]]
   :main brew-monitor.web)
-
