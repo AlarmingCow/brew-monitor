@@ -11,4 +11,7 @@
                  [clojurewerkz/elastisch "2.1.0"]
                  [clj-time "0.8.0"]
                  [liberator "0.12.2"]]
+  :plugins [[lein-ring "0.9.1"]]
+  :ring {:handler brew-monitor.web/application
+         :adapter {:port 8080}}
   :main brew-monitor.web)
