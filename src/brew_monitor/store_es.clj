@@ -1,7 +1,8 @@
 (ns brew-monitor.store-es
   (:require [clojurewerkz.elastisch.native :as es]
             [clojurewerkz.elastisch.native.document :as doc]
-            [clojurewerkz.elastisch.native.response :as response]))
+            [clojurewerkz.elastisch.native.response :as response]
+            [clojurewerkz.elastisch.query :as query]))
 
 (def conn (es/connect [["127.0.0.1" 9300]] {"cluster.name" "elasticsearch"}))
 
@@ -11,3 +12,6 @@
                                        :sort {:time "desc"}
                                        :size max-results
                                        :query {:filtered {:filter {:range {:time {:gte min-date, :lt "now"}}}}}))))
+
+(defn delete-all-readings []
+  (doc/delete-by-query conn "temp_gauge" "reading" (query/match-all)))

@@ -5,7 +5,8 @@
             [clj-time.format :as time-f]
             [clj-time.local :as local]
             [clj-time.periodic :as periodic]
-            [clj-time.coerce :as coerce]))
+            [clj-time.coerce :as coerce]
+            [brew-monitor.store-es :as store]))
 
 (def short-temps [20.0, 20.1, 20.2, 20.3, 20.5, 20.7, 21.0, 22.0, 21.9, 21.9, 21.8, 19.0, 19.5, 19.8, 19.9])
 
@@ -30,8 +31,16 @@
   (esd/create (es/connect "http://localhost:9200") "temp_gauge" "reading" reading))
 
 (defn -main []
+  (pr "Deleting all readings... ")
+  (let [response (store/delete-all-readings)]
+    (if (:ok response)
+      (prn "done.")
+      (prn "failed.")))
+  (pr "Adding last hour of readings... ")
   (doseq [reading (readings-for-last-hour)]
     (send-temp reading))
+  (prn "done.")
+  (prn "Continuously adding new temps")
   (doseq [temp repeated-temps]
     (send-temp { :time (get-iso-time), :temp temp })
     (Thread/sleep 1000)))
