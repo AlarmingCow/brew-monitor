@@ -1,9 +1,13 @@
+var cToF = function(temp) {
+    return temp*9/5 + 32;
+};
+
 $(document).ready(function() {
     var updateTemp = function() {
         jQuery.ajax({
             url: "/mostRecentTemps?results=20",
             success: function(data) {
-                jQuery("#most-recent-temp").text(data.temps[0].temp);
+                jQuery("#most-recent-temp").text(Math.round(cToF(data.temps[0].temp)) + " ºF");
             },
             dataType: "json"
         });
@@ -46,7 +50,7 @@ $(document).ready(function() {
             var temps = data.temps;
             temps.forEach(function (d) {
                 d.time = parseDate(d.time);
-                d.temp = +d.temp;
+                d.temp = cToF(+d.temp);
             });
 
             graph.selectAll("*").remove();
@@ -71,7 +75,7 @@ $(document).ready(function() {
                 .attr("y", 6)
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
-                .text("Temperature (ºC)");
+                .text("Temperature (ºF)");
 
             graph.append("path")
                 .datum(temps)

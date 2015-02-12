@@ -13,5 +13,6 @@
                  [liberator "0.12.2"]]
   :plugins [[lein-ring "0.9.1"]]
   :ring {:handler brew-monitor.web/application
-         :adapter {:port 8080}}
+         :adapter {:port 8080}
+         :auto-refresh? true}
   :main brew-monitor.web)
