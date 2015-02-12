@@ -5,7 +5,7 @@ var cToF = function(temp) {
 $(document).ready(function() {
     var updateTemp = function() {
         jQuery.ajax({
-            url: "/mostRecentTemps?results=20",
+            url: "/mostRecentTemps?results=1",
             success: function(data) {
                 jQuery("#most-recent-temp").text(Math.round(cToF(data.temps[0].temp)) + " ºF");
             },
@@ -46,7 +46,8 @@ $(document).ready(function() {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var drawGraph = function () {
-        d3.json("/mostRecentTemps?results=20", function (data) {
+        var minTime = new Date().getTime() - 3600000;
+        d3.json("/mostRecentTemps?min-date=" + minTime + "&results=" + 5000, function (data) {
             var temps = data.temps;
             temps.forEach(function (d) {
                 d.time = parseDate(d.time);

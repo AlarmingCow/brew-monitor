@@ -7,6 +7,9 @@
             [brew-monitor.store-es :as store]
             [liberator.core :as lib]))
 
+(defn cToF [temp]
+  (Math/round (+ (* 9 (/ temp 5)) 32)))
+
 (defn index []
   (page/html5
     [:head
@@ -17,14 +20,17 @@
      (page/include-js "js/main.js")]
     [:body
       [:div {:id "content"}
-       [:div {:id "most-recent-temp"} (:temp (first (store/most-recent-temps 1)))]
+       [:div {:id "most-recent-temp"} (str (cToF (:temp (first (store/most-recent-temps 1)))) " ºF")]
        [:div {:id "graph"}]]]))
 
 (defroutes routes
   (GET "/" [] (index))
   (GET "/mostRecentTemps" {params :params}
-       (lib/resource :available-media-types ["application/json"]
-                     :handle-ok {:temps (store/most-recent-temps (Integer/parseInt (:results params)))}))
+       (let [inner-params (-> params
+                              (cond-> (:results params) (assoc :max-results (Integer/parseInt (:results params))))
+                              (cond-> (:min-time params) (assoc :min-date (Long/parseLong (:min-date params)))))]
+         (lib/resource :available-media-types ["application/json"]
+                       :handle-ok {:temps (store/most-recent-temps inner-params)})))
   (route/resources "/"))
 
 (def application (handler/site routes))
