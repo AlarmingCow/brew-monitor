@@ -13,6 +13,7 @@
      [:title "Most recent temperature"]
      (page/include-js "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
      (page/include-js "//d3js.org/d3.v3.min.js")
+     (page/include-css "css/main.css")
      (page/include-js "js/main.js")]
     [:body
       [:div {:id "content"}
