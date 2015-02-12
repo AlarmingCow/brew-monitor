@@ -35,40 +35,50 @@ $(document).ready(function() {
         .x(function(reading) { return x(reading.time); })
         .y(function(reading) { return y(reading.temp); });
 
-    var svg = d3.select("#graph").append("svg")
+    var graph = d3.select("#graph").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    d3.json("/mostRecentTemps?results=20", function (data) {
-        var temps = data.temps;
-        temps.forEach(function(d) {
-            d.time = parseDate(d.time);
-            d.temp = +d.temp;
+    var drawGraph = function () {
+        d3.json("/mostRecentTemps?results=20", function (data) {
+            var temps = data.temps;
+            temps.forEach(function (d) {
+                d.time = parseDate(d.time);
+                d.temp = +d.temp;
+            });
+
+            graph.selectAll("*").remove();
+
+            x.domain(d3.extent(temps, function (d) {
+                return d.time;
+            }));
+            y.domain(d3.extent(temps, function (d) {
+                return d.temp;
+            }));
+
+            graph.append("g")
+                .attr("class", "x-axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+            graph.append("g")
+                .attr("class", "y-axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Temperature (ºC)");
+
+            graph.append("path")
+                .datum(temps)
+                .attr("class", "line")
+                .attr("d", line);
         });
+    };
 
-        x.domain(d3.extent(temps, function(d) { return d.time; }));
-        y.domain(d3.extent(temps, function(d) { return d.temp; }));
-
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
-
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-            .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Temperature (ºC)");
-
-        svg.append("path")
-            .datum(temps)
-            .attr("class", "line")
-            .attr("d", line);
-    });
+    setInterval(function () { drawGraph() }, 1000);
 });
