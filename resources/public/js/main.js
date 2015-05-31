@@ -8,6 +8,7 @@ $(document).ready(function() {
             url: "/mostRecentTemps?results=1",
             success: function(data) {
                 jQuery("#most-recent-temp").text(Math.round(cToF(data.temps[0].temp)) + " ºF");
+                jQuery("#most-recent-temp-time").text(moment(data.temps[0].time).fromNow());
             },
             dataType: "json"
         });
